@@ -58,7 +58,7 @@
 			// 'meta_value' => $country['country_code']
 			'meta_value' => 'US'
 		));
-		if (empty($discount)) return;
+		if (empty($discount)) return '<div id="pricing-parity-content"></div>';
 
 		// Get discount code
 		$discount_id = get_post_meta( $discount[0]->ID, 'pricing_parity_price', true );
