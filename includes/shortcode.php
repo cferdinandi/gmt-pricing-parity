@@ -63,7 +63,7 @@
 		// Get discount code
 		$discount_id = get_post_meta( $discount[0]->ID, 'pricing_parity_price', true );
 		$code = edd_get_discount_code($discount_id);
-		if (empty($code)) return;
+		if (empty($code)) return '<div id="pricing-parity-content"></div>';
 
 		// Get discount details
 		$type = edd_get_discount_type($discount_id);
