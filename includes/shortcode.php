@@ -78,7 +78,7 @@
 		), array(
 			$code,
 			$country['country_name'],
-			$country['country_code'],
+			strtolower($country['country_code']),
 			$amount,
 		), $content);
 
