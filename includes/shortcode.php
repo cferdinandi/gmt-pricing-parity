@@ -1,35 +1,5 @@
 <?php
 
-
-   function get_client_ip() {
-		$ipaddress = '';
-		if ($_SERVER['HTTP_CLIENT_IP']) {
-			$ipaddress = $_SERVER['HTTP_CLIENT_IP'];
-		} else if ($_SERVER['HTTP_X_FORWARDED_FOR']) {
-			$ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
-		} else if ($_SERVER['HTTP_X_FORWARDED']) {
-			$ipaddress = $_SERVER['HTTP_X_FORWARDED'];
-		} else if ($_SERVER['HTTP_FORWARDED_FOR']) {
-			$ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
-		} else if ($_SERVER['HTTP_FORWARDED']) {
-		   $ipaddress = $_SERVER['HTTP_FORWARDED'];
-		} else if ($_SERVER['REMOTE_ADDR']) {
-			$ipaddress = $_SERVER['REMOTE_ADDR'];
-		} else {
-			$ipaddress = 'UNKNOWN';
-		}
-		return $ipaddress;
-	}
-
-
-	function gmt_pricing_parity_get_country() {
-		$ip = get_client_ip();
-		$request = wp_remote_get( 'https://freegeoip.net/json/' . $ip );
-		$response = wp_remote_retrieve_body( $request );
-		$data = json_decode( $response, true );
-		return $data;
-	}
-
 	/**
 	 * Adds the pricing parity shortcode
 	 * @param  array $atts The shortcode args
@@ -55,8 +25,7 @@
 		$discount = get_posts(array(
 			'post_type' => 'gmt_pricing_parity',
 			'meta_key' => 'pricing_parity_country',
-			// 'meta_value' => $country['country_code']
-			'meta_value' => 'US'
+			'meta_value' => $country['country_code']
 		));
 		if (empty($discount)) return '<div id="pricing-parity-content"></div>';
 

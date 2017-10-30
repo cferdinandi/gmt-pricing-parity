@@ -252,3 +252,41 @@
 			"ZW" => "Zimbabwe"
 		);
 	}
+
+
+	/**
+	 * Get the visitor's IP address
+	 * @return String The IP address
+	 */
+   function get_client_ip() {
+		$ipaddress = '';
+		if ($_SERVER['HTTP_CLIENT_IP']) {
+			$ipaddress = $_SERVER['HTTP_CLIENT_IP'];
+		} else if ($_SERVER['HTTP_X_FORWARDED_FOR']) {
+			$ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+		} else if ($_SERVER['HTTP_X_FORWARDED']) {
+			$ipaddress = $_SERVER['HTTP_X_FORWARDED'];
+		} else if ($_SERVER['HTTP_FORWARDED_FOR']) {
+			$ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
+		} else if ($_SERVER['HTTP_FORWARDED']) {
+		   $ipaddress = $_SERVER['HTTP_FORWARDED'];
+		} else if ($_SERVER['REMOTE_ADDR']) {
+			$ipaddress = $_SERVER['REMOTE_ADDR'];
+		} else {
+			$ipaddress = 'UNKNOWN';
+		}
+		return $ipaddress;
+	}
+
+
+	/**
+	 * Get the visitor's location information
+	 * @return Array The location data
+	 */
+	function gmt_pricing_parity_get_country() {
+		$ip = get_client_ip();
+		$request = wp_remote_get( 'https://freegeoip.net/json/' . $ip );
+		$response = wp_remote_retrieve_body( $request );
+		$data = json_decode( $response, true );
+		return $data;
+	}
