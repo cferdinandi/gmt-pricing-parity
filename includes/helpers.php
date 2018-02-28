@@ -285,7 +285,8 @@
 	 */
 	function gmt_pricing_parity_get_country() {
 		$ip = get_client_ip();
-		$request = wp_remote_get( 'https://freegeoip.net/json/' . $ip );
+		// Alt URL: http://ip-api.com/json
+		$request = wp_remote_get( 'https://gmt-geoip.herokuapp.com/json/' . $ip );
 		$response = wp_remote_retrieve_body( $request );
 		$data = json_decode( $response, true );
 		return $data;
