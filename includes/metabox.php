@@ -17,7 +17,7 @@
 
 		// Variables
 		global $post;
-		$discounts = edd_get_discounts();
+		$discounts = edd_get_discounts(array('posts_per_page' => -1));
 		$countries = gmt_pricing_parity_get_countries();
 		$price = get_post_meta( $post->ID, 'pricing_parity_price', true );
 		$country = get_post_meta( $post->ID, 'pricing_parity_country', true );
