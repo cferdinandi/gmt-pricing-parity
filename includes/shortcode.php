@@ -22,11 +22,16 @@
 
 		// Get details
 		$country = gmt_pricing_parity_get_country();
+		if ($_GET['test_api']) {
+			print('<pre>');
+			print_r($country);
+			print('</pre>');
+		}
 		if (empty($country)) return '<div id="pricing-parity-content"></div>';
 		$discount = get_posts(array(
 			'post_type' => 'gmt_pricing_parity',
 			'meta_key' => 'pricing_parity_country',
-			'meta_value' => $country['country_code']
+			'meta_value' => $_GET['country_code'] ? $_GET['country_code'] : $country['country_code']
 		));
 		if (empty($discount)) return '<div id="pricing-parity-content"></div>';
 
