@@ -27,7 +27,7 @@
 			print_r($country);
 			print('</pre>');
 		}
-		if (empty($country)) return '<div id="pricing-parity-content"></div>';
+		if (empty($country) || !is_array($country) || !array_key_exists('country_name', $country) || !array_key_exists('country_code', $country)) return '<div id="pricing-parity-content"></div>';
 		$discount = get_posts(array(
 			'post_type' => 'gmt_pricing_parity',
 			'meta_key' => 'pricing_parity_country',

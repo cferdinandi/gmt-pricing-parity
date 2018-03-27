@@ -3,6 +3,8 @@ Display country-specific EDD discounts to visitors.
 
 Display with the short code `[pricing_parity]`. Pass in a string with the variables below to customize.
 
+*__Note:__ Requires the [PHP GEO IP extension](http://php.net/manual/en/book.geoip.php) to be installed.*
+
 
 
 ## Template variables
