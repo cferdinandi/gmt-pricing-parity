@@ -3,11 +3,6 @@
 
 	function gmt_pricing_parity_get_discount($data) {
 
-		// if no email, throw an error
-		if (empty($data['test']) || !filter_var($data['test'], FILTER_VALIDATE_EMAIL)) {
-			return new WP_Error( 'code', __( 'Not a valid email address', 'edd_for_courses' ) );
-		}
-
 		// Get details
 		$country = gmt_pricing_parity_get_country();
 		if ($data['test'] === 'test') {
@@ -50,6 +45,19 @@
 
 
 	function gmt_pricing_parity_register_routes () {
+		register_rest_route('gmt-pricing-parity/v1', '/discount', array(
+			'methods' => 'GET',
+			'callback' => 'gmt_pricing_parity_get_discount',
+			// 'permission_callback' => function () {
+			// 	return current_user_can( 'edit_theme_options' );
+			// },
+			// 'args' => array(
+			// 	'test' => array(
+			// 		'type' => 'string',
+			// 	),
+			// ),
+		));
+
 		register_rest_route('gmt-pricing-parity/v1', '/discount/(?P<test>\S+)', array(
 			'methods' => 'GET',
 			'callback' => 'gmt_pricing_parity_get_discount',
