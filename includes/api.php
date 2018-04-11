@@ -17,14 +17,14 @@
 			'meta_value' => $_GET['country_code'] ? $_GET['country_code'] : $country['country_code']
 		));
 		if (empty($discount)) {
-			return new WP_Error( 204, __( 'No discounts found.', 'edd_for_courses' ) );
+			return new WP_REST_Response(array('msg' => __( 'No discounts found.', 'pricing_parity' )), 204);
 		}
 
 		// Get discount code
 		$discount_id = get_post_meta( $discount[0]->ID, 'pricing_parity_price', true );
 		$code = edd_get_discount_code($discount_id);
 		if (empty($code)) {
-			return new WP_Error( 204, __( 'No discounts found.', 'edd_for_courses' ) );
+			return new WP_REST_Response(array('msg' => __( 'No discounts found.', 'pricing_parity' )), 204);
 		}
 
 		// Get discount details
@@ -48,22 +48,11 @@
 		register_rest_route('gmt-pricing-parity/v1', '/discount', array(
 			'methods' => 'GET',
 			'callback' => 'gmt_pricing_parity_get_discount',
-			// 'permission_callback' => function () {
-			// 	return current_user_can( 'edit_theme_options' );
-			// },
-			// 'args' => array(
-			// 	'test' => array(
-			// 		'type' => 'string',
-			// 	),
-			// ),
 		));
 
 		register_rest_route('gmt-pricing-parity/v1', '/discount/(?P<test>\S+)', array(
 			'methods' => 'GET',
 			'callback' => 'gmt_pricing_parity_get_discount',
-			// 'permission_callback' => function () {
-			// 	return current_user_can( 'edit_theme_options' );
-			// },
 			'args' => array(
 				'test' => array(
 					'type' => 'string',
