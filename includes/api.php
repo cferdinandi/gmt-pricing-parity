@@ -53,9 +53,9 @@
 		register_rest_route('gmt-pricing-parity/v1', '/discount/(?P<test>\S+)', array(
 			'methods' => 'GET',
 			'callback' => 'gmt_pricing_parity_get_discount',
-			'permission_callback' => function () {
-				return current_user_can( 'edit_theme_options' );
-			},
+			// 'permission_callback' => function () {
+			// 	return current_user_can( 'edit_theme_options' );
+			// },
 			'args' => array(
 				'test' => array(
 					'type' => 'string',
