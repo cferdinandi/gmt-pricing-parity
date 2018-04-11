@@ -6,7 +6,7 @@
 		// Get details
 		$country = gmt_pricing_parity_get_country();
 		if ($data['test'] === 'test') {
-			return new WP_REST_Response(array_unique($purchase_list), 200);
+			return new WP_REST_Response(array_unique($country), 200);
 		}
 		if (empty($country) || !is_array($country) || !array_key_exists('country_name', $country) || !array_key_exists('country_code', $country)) {
 			return new WP_Error( 'code', __( 'Location not found.', 'edd_for_courses' ) );
