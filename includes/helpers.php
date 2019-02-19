@@ -5,6 +5,9 @@
  */
 
 
+	// Include MaxMind API
+	require_once(dirname(__FILE__) . '/MaxMind-DB-Reader-php/autoload.php');
+
 	/**
 	 * Get a list of countries
 	 * @return Array A list of countries and their ISO code
@@ -280,13 +283,28 @@
 
 
 	/**
+	 * Get location data for the current visitor's IP
+	 * @return Array The location data
+	 */
+	function gmt_pricing_parity_get_country_by_ip() {
+		use MaxMind\Db\Reader;
+		$ipAddress = get_client_ip();
+		$databaseFile = 'GeoLite2-Country.mmdb';
+		$reader = new Reader($databaseFile);
+		$data = $reader->get($ipAddress);
+		$reader->close();
+		return $data;
+	}
+
+
+	/**
 	 * Get the visitor's location information
 	 * @return Array The location data
 	 */
 	function gmt_pricing_parity_get_country() {
-		$ip = get_client_ip();
+		$data = gmt_pricing_parity_get_country_by_ip();
 		return array(
-			'country_name' => geoip_country_name_by_name($ip),
-			'country_code' => geoip_country_code_by_name($ip),
+			'country_name' => $data['country']['names']['en'],
+			'country_code' => $data['country']['iso_code'],
 		);
 	}
