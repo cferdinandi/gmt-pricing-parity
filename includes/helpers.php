@@ -289,7 +289,7 @@
 	 */
 	function gmt_pricing_parity_get_country_by_ip() {
 		$ipAddress = get_client_ip();
-		$databaseFile = 'GeoLite2-Country.mmdb';
+		$databaseFile = dirname(__FILE__) . '/GeoLite2-Country.mmdb';
 		$reader = new Reader($databaseFile);
 		$data = $reader->get($ipAddress);
 		$reader->close();
