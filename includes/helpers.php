@@ -7,6 +7,7 @@
 
 	// Include MaxMind API
 	require_once(dirname(__FILE__) . '/MaxMind-DB-Reader-php/autoload.php');
+	use MaxMind\Db\Reader;
 
 	/**
 	 * Get a list of countries
@@ -287,7 +288,6 @@
 	 * @return Array The location data
 	 */
 	function gmt_pricing_parity_get_country_by_ip() {
-		use MaxMind\Db\Reader;
 		$ipAddress = get_client_ip();
 		$databaseFile = 'GeoLite2-Country.mmdb';
 		$reader = new Reader($databaseFile);
