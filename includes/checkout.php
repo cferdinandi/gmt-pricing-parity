@@ -43,7 +43,7 @@
 	 */
 	function gmt_pricing_parity_discount_filters() {
 		$discounts = edd_get_cart_discounts();
-		if ( count($discounts) < 1 || (count($discounts) < 3 && gmt_pricing_parity_is_location_code($discounts)) ) {
+		if ( count($discounts) < 1 || (count($discounts) < 2 && gmt_pricing_parity_is_location_code($discounts)) ) {
 			return true;
 		} else {
 			return false;
