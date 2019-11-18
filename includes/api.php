@@ -3,44 +3,27 @@
 
 	function gmt_pricing_parity_get_discount($data) {
 
-		// Get details
+		// Get location details
 		$country = gmt_pricing_parity_get_country();
+
+		// If a test call, return country details
 		if ($data['test'] === 'test') {
 			return new WP_REST_Response($country, 200);
 		}
-		if (empty($country) || !is_array($country) || !array_key_exists('country_name', $country) || !array_key_exists('country_code', $country)) {
+
+		// If there's no location info, throw 400 error
+		if (empty($country)) {
 			return new WP_Error( 400, __( 'Location not found.', 'edd_for_courses' ) );
 		}
-		$discount = get_posts(array(
-			'post_type' => 'gmt_pricing_parity',
-			'meta_key' => 'pricing_parity_country',
-			'meta_value' => $_GET['country_code'] ? $_GET['country_code'] : $country['country_code']
-		));
+
+		// Get discount by country
+		$discount = gmt_pricing_parity_get_discount_by_country($country, $_GET['country_code']);
 		if (empty($discount)) {
 			return new WP_REST_Response(array('status' => 'no_discount', 'msg' => __( 'No discounts found.', 'pricing_parity' )), 200);
 		}
 
-		// Get discount code
-		$discount_id = get_post_meta( $discount[0]->ID, 'pricing_parity_price', true );
-		$code = edd_get_discount_code($discount_id);
-		if (empty($code)) {
-			return new WP_REST_Response(array('status' => 'no_discount', 'msg' => __( 'No discounts found.', 'pricing_parity' )), 200);
-		}
-
-		// Get discount details
-		$type = edd_get_discount_type($discount_id);
-		$amount = edd_format_discount_rate( $type, edd_get_discount_amount($discount_id) );
-
-		// Update content
-		$content = array(
-			'status' => 'success',
-			'discount' => $code,
-			'amount' => $amount,
-			'country' => $country['country_name'],
-			'code' => strtolower($country['country_code']),
-		);
-
-		return new WP_REST_Response($content, 200);
+		// Otherwise, return the discount
+		return new WP_REST_Response($discount, 200);
 
 	}
 

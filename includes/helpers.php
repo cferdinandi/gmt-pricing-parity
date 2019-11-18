@@ -303,8 +303,43 @@
 	 */
 	function gmt_pricing_parity_get_country() {
 		$data = gmt_pricing_parity_get_country_by_ip();
+		if (empty($country) || !is_array($country) || !array_key_exists('country_name', $country) || !array_key_exists('country_code', $country)) return;
 		return array(
 			'country_name' => $data['country']['names']['en'],
 			'country_code' => $data['country']['iso_code'],
 		);
+	}
+
+
+
+	function gmt_pricing_parity_get_discount_by_country($country, $country_code) {
+
+		if (empty($country)) return;
+
+		// Get discount
+		$discount = get_posts(array(
+			'post_type' => 'gmt_pricing_parity',
+			'meta_key' => 'pricing_parity_country',
+			'meta_value' => $country_code ? $country_code : $country['country_code']
+		));
+		if (empty($discount)) return;
+
+		// Get discount code
+		$discount_id = get_post_meta( $discount[0]->ID, 'pricing_parity_price', true );
+		$code = edd_get_discount_code($discount_id);
+		if (empty($code)) return;
+
+		// Get discount details
+		$type = edd_get_discount_type($discount_id);
+		$amount = edd_format_discount_rate( $type, edd_get_discount_amount($discount_id) );
+
+		// return discount details
+		return array(
+			'status' => 'success',
+			'discount' => $code,
+			'amount' => $amount,
+			'country' => $country['country_name'],
+			'code' => strtolower($country['country_code']),
+		);
+
 	}
