@@ -311,8 +311,13 @@
 	}
 
 
-
-	function gmt_pricing_parity_get_discount_by_country($country, $country_code) {
+	/**
+	 * Get the discount (if any) for a country
+	 * @param  Array  $country      The country details
+	 * @param  String $country_code The country code, if not the user's actual country code (for testing)
+	 * @return Array                The discount details
+	 */
+	function gmt_pricing_parity_get_discount_by_country($country) {
 
 		if (empty($country)) return;
 
@@ -320,7 +325,7 @@
 		$discount = get_posts(array(
 			'post_type' => 'gmt_pricing_parity',
 			'meta_key' => 'pricing_parity_country',
-			'meta_value' => $country_code ? $country_code : $country['country_code']
+			'meta_value' => $_GET['country_code'] ? $_GET['country_code'] : $country['country_code']
 		));
 		if (empty($discount)) return;
 
@@ -342,4 +347,22 @@
 			'code' => strtolower($country['country_code']),
 		);
 
+	}
+
+
+	/**
+	 * Check if one discount code in a set is a pricint parity code
+	 * @param  Array   $discounts The discount codes
+	 * @return Boolean            If true, at least one code is a location discount
+	 */
+	function gmt_pricing_parity_is_location_code($discounts) {
+		foreach ($discounts as $key => $discount) {
+			$location_code = get_posts(array(
+				'post_type' => 'gmt_pricing_parity',
+				'meta_key' => 'pricing_parity_price',
+				'meta_value' => $discount
+			));
+			if (!empty($location_code)) return true;
+		}
+		return false;
 	}

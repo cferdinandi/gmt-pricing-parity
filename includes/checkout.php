@@ -35,3 +35,38 @@
 
 	}
 	add_filter( 'edd_is_discount_valid', 'gmt_pricing_parity_verify_discount_code', 10, 3 );
+
+
+	/**
+	 * Allow more than one discount if one of them is a pricing parity discount
+	 * @return [type] [description]
+	 */
+	function gmt_pricing_parity_discount_filters() {
+		$discounts = edd_get_cart_discounts();
+		if ( count($discounts) < 1 || (count($discounts) < 3 && gmt_pricing_parity_is_location_code($discounts)) ) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	add_filter( 'edd_multiple_discounts_allowed', 'gmt_pricing_parity_discount_filters' );
+
+
+	/**
+	 * Automatically add a pricing parity discount
+	 */
+	function gmt_pricing_parity_auto_set_discount() {
+
+		// Get location details
+		$country = gmt_pricing_parity_get_country();
+		if (empty($country)) return;
+
+		// Get discount by country
+		$discount = gmt_pricing_parity_get_discount_by_country($country);
+		if (empty($discount)) return;
+
+		// If there's a discount, set it
+		edd_set_cart_discount( $discount['discount'] );
+
+	}
+	add_action( 'init', 'gmt_pricing_parity_auto_set_discount' );

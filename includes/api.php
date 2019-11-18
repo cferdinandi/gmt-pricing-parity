@@ -17,7 +17,7 @@
 		}
 
 		// Get discount by country
-		$discount = gmt_pricing_parity_get_discount_by_country($country, $_GET['country_code']);
+		$discount = gmt_pricing_parity_get_discount_by_country($country);
 		if (empty($discount)) {
 			return new WP_REST_Response(array('status' => 'no_discount', 'msg' => __( 'No discounts found.', 'pricing_parity' )), 200);
 		}
