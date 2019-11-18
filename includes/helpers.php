@@ -338,26 +338,17 @@
 		$type = edd_get_discount_type($discount_id);
 		$amount = edd_format_discount_rate( $type, edd_get_discount_amount($discount_id) );
 
+		// Get discount amount
+		$amountNew = get_post_meta( $discount[0]->ID, 'pricing_parity_amount', true );
+
 		// return discount details
 		return array(
 			'status' => 'success',
 			'discount' => $code,
 			'amount' => $amount,
+			'amountNew' => $amountNew,
 			'country' => $country['country_name'],
 			'code' => strtolower($country['country_code']),
 		);
 
-	}
-
-
-	/**
-	 * Check if one discount code in a set is a pricint parity code
-	 * @param  Array   $discounts The discount codes
-	 * @return Boolean            If true, at least one code is a location discount
-	 */
-	function gmt_pricing_parity_is_location_code($discounts) {
-		foreach ($discounts as $key => $discount) {
-			if (!empty(edd_get_discount_by_code($discount))) return true;
-		}
-		return false;
 	}
