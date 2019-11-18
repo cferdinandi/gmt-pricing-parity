@@ -329,26 +329,48 @@
 		));
 		if (empty($discount)) return;
 
-		// Get discount code
-		$discount_id = get_post_meta( $discount[0]->ID, 'pricing_parity_price', true );
-		$code = edd_get_discount_code($discount_id);
-		if (empty($code)) return;
-
-		// Get discount details
-		$type = edd_get_discount_type($discount_id);
-		$amount = edd_format_discount_rate( $type, edd_get_discount_amount($discount_id) );
-
 		// Get discount amount
-		$amountNew = get_post_meta( $discount[0]->ID, 'pricing_parity_amount', true );
+		$amount = get_post_meta( $discount[0]->ID, 'pricing_parity_amount', true );
 
 		// return discount details
 		return array(
 			'status' => 'success',
-			'discount' => $code,
 			'amount' => $amount,
-			'amountNew' => $amountNew,
 			'country' => $country['country_name'],
 			'code' => strtolower($country['country_code']),
 		);
+
+	}
+
+
+	/**
+	 * Get an item's pre-adjusted price
+	 * @param  Array $item    The item details
+	 * @param  Array $options The options array
+	 * @return Float          The pre-adjusted price
+	 */
+	function gmt_pricing_parity_get_item_preadjusted_price($item_id, $options) {
+
+		$price = 0;
+		$variable_prices = edd_has_variable_prices( $item_id );
+
+		if ( $variable_prices ) {
+			$prices = edd_get_variable_prices( $item_id );
+
+			if ( $prices ) {
+				if ( ! empty( $options ) ) {
+					$price = isset( $prices[ $options['price_id'] ] ) ? $prices[ $options['price_id'] ]['amount'] : false;
+				} else {
+					$price = false;
+				}
+			}
+		}
+
+		if ( ! $variable_prices || false === $price ) {
+			// Get the standard Download price if not using variable prices
+			$price = edd_get_download_price( $item_id );
+		}
+
+		return $price;
 
 	}

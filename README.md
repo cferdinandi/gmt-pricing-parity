@@ -1,7 +1,7 @@
 # GMT Pricing Parity
-Display country-specific EDD discounts to visitors.
+Localize base prices for different countries. Automatically adjusts the price of items in-cart and displays a message.
 
-Display with the short code `[pricing_parity]`. Pass in a string with the variables below to customize.
+Display a message about the localized pricing with the short code `[pricing_parity]`. Pass in a string with the variables below to customize.
 
 
 
@@ -9,7 +9,6 @@ Display with the short code `[pricing_parity]`. Pass in a string with the variab
 
 - `{{country}}` - the country name
 - `{{iso}}` - the country ISO code
-- `{{code}}` - the discount code
 - `{{amount}}` - the discount amount
 
 

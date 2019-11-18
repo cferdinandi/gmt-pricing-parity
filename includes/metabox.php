@@ -17,10 +17,7 @@
 
 		// Variables
 		global $post;
-		$discounts = edd_get_discounts(array('posts_per_page' => -1));
 		$countries = gmt_pricing_parity_get_countries();
-		$price = get_post_meta( $post->ID, 'pricing_parity_price', true );
-
 		$country = get_post_meta( $post->ID, 'pricing_parity_country', true );
 		$amount = get_post_meta( $post->ID, 'pricing_parity_amount', true );
 
@@ -42,17 +39,6 @@
 				<div>
 					<label for="pricing_parity_amount">Discount Percentage</label><br>
 					<input type="number" name="pricing_parity_amount" id="pricing_parity_amount" value="<?php echo esc_attr(intval($amount)); ?>">
-				</div>
-				<br>
-
-				<div>
-					<label for="pricing_parity_discount">Discount</label><br>
-					<select id="pricing_parity_discount" name="pricing_parity_discount">
-						<option></option>
-						<?php foreach ($discounts as $discount) : ?>
-							<option value="<?php echo esc_attr($discount->ID); ?>" <?php selected($price, $discount->ID); ?>><?php echo esc_attr(edd_get_discount_code($discount->ID)); ?></option>
-						<?php endforeach; ?>
-					</select>
 				</div>
 
 			</fieldset>
@@ -86,12 +72,11 @@
 		}
 
 		// Check that events details are being passed along
-		if ( !isset( $_POST['pricing_parity_discount'] ) && !isset( $_POST['pricing_parity_country'] ) ) {
+		if ( !isset( $_POST['pricing_parity_country'] ) && !isset( $_POST['pricing_parity_amount'] ) ) {
 			return $post->ID;
 		}
 
 		// Save data
-		update_post_meta( $post->ID, 'pricing_parity_price', wp_filter_post_kses( $_POST['pricing_parity_discount'] ) );
 		update_post_meta( $post->ID, 'pricing_parity_country', wp_filter_post_kses( $_POST['pricing_parity_country'] ) );
 		update_post_meta( $post->ID, 'pricing_parity_amount', wp_filter_post_kses( $_POST['pricing_parity_amount'] ) );
 

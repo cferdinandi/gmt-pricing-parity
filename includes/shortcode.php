@@ -27,34 +27,19 @@
 			print_r($country);
 			print('</pre>');
 		}
-		if (empty($country) || !is_array($country) || !array_key_exists('country_name', $country) || !array_key_exists('country_code', $country)) return '<div id="pricing-parity-content"></div>';
-		$discount = get_posts(array(
-			'post_type' => 'gmt_pricing_parity',
-			'meta_key' => 'pricing_parity_country',
-			'meta_value' => $_GET['country_code'] ? $_GET['country_code'] : $country['country_code']
-		));
+		if (empty($country)) return '<div id="pricing-parity-content"></div>';
+		$discount = gmt_pricing_parity_get_discount_by_country($country);
 		if (empty($discount)) return '<div id="pricing-parity-content"></div>';
-
-		// Get discount code
-		$discount_id = get_post_meta( $discount[0]->ID, 'pricing_parity_price', true );
-		$code = edd_get_discount_code($discount_id);
-		if (empty($code)) return '<div id="pricing-parity-content"></div>';
-
-		// Get discount details
-		$type = edd_get_discount_type($discount_id);
-		$amount = edd_format_discount_rate( $type, edd_get_discount_amount($discount_id) );
 
 		// Update content
 		$content = str_replace(array(
-			'{{code}}',
 			'{{country}}',
 			'{{iso}}',
 			'{{amount}}',
 		), array(
-			$code,
 			$country['country_name'],
 			strtolower($country['country_code']),
-			$amount,
+			$discount['amount'],
 		), $content);
 
 		return '<div id="pricing-parity-content">' . wpautop( $content, false ) . '</div>';
