@@ -303,7 +303,7 @@
 	 */
 	function gmt_pricing_parity_get_country() {
 		$data = gmt_pricing_parity_get_country_by_ip();
-		if (empty($country) || !is_array($country) || !array_key_exists('country_name', $country) || !array_key_exists('country_code', $country)) return;
+		if (empty($data) || !is_array($data) || !array_key_exists('country_name', $data) || !array_key_exists('country_code', $data)) return;
 		return array(
 			'country_name' => $data['country']['names']['en'],
 			'country_code' => $data['country']['iso_code'],
