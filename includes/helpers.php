@@ -357,12 +357,7 @@
 	 */
 	function gmt_pricing_parity_is_location_code($discounts) {
 		foreach ($discounts as $key => $discount) {
-			$location_code = get_posts(array(
-				'post_type' => 'gmt_pricing_parity',
-				'meta_key' => 'pricing_parity_price',
-				'meta_value' => $discount
-			));
-			if (!empty($location_code)) return true;
+			if (!empty(edd_get_discount_by_code($discount))) return true;
 		}
 		return false;
 	}
