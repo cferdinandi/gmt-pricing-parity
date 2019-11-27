@@ -103,3 +103,21 @@
 
 	}
 	add_action( 'edd_cart_items_before', 'gmt_pricing_parity_cart_message' );
+
+
+	/**
+	 * Add pricing parity details to the payment
+	 * @param  Integer $payment_id   The payment ID
+	 * @param  Array   $payment_data The payment data
+	 */
+	function gmt_pricing_parity_add_details_to_payment($payment_id, $payment_data) {
+
+		// Check for a discount
+		$discount = EDD()->session->get( 'pricing_parity');
+		if (empty($discount)) return;
+
+		// Save as metadata on the payment
+		update_post_meta( $payment_id, 'pricing_parity_discount', $discount );
+
+	}
+	add_action( 'edd_insert_payment', 'gmt_pricing_parity_add_details_to_payment' );
