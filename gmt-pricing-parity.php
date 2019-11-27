@@ -5,7 +5,7 @@
  * Plugin URI: https://github.com/cferdinandi/gmt-pricing-parity/
  * GitHub Plugin URI: https://github.com/cferdinandi/gmt-pricing-parity/
  * Description: Provide custom discounts based on geographic location
- * Version: 2.3.0
+ * Version: 2.3.1
  * Author: Chris Ferdinandi
  * Author URI: http://gomakethings.com
  * License: GPLv3
@@ -25,6 +25,9 @@ require_once( plugin_dir_path( __FILE__ ) . 'includes/api.php' );
 
 // Checkout
 require_once( plugin_dir_path( __FILE__ ) . 'includes/checkout.php' );
+
+// Payments
+require_once( plugin_dir_path( __FILE__ ) . 'includes/payments.php' );
 
 // Custom Post Type
 require_once( plugin_dir_path( __FILE__ ) . 'includes/cpt.php' );
