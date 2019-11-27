@@ -107,17 +107,20 @@
 
 	/**
 	 * Add pricing parity details to the payment
-	 * @param  Integer $payment_id   The payment ID
-	 * @param  Array   $payment_data The payment data
+	 * @param  array $merged_data The payment meta data
+	 * @param  array
 	 */
-	function gmt_pricing_parity_add_details_to_payment($payment_id, $payment_data) {
+	function gmt_pricing_parity_add_details_to_payment($merged_data) {
 
 		// Check for a discount
 		$discount = EDD()->session->get( 'pricing_parity');
-		if (empty($discount)) return;
 
-		// Save as metadata on the payment
-		update_post_meta( $payment_id, 'pricing_parity_discount', $discount );
+		// Add discount to data
+		if (!empty($discount)) {
+			$merged_data['pricing_parity'] = $discount;
+		}
+
+		return $merged_data;
 
 	}
-	add_action( 'edd_insert_payment', 'gmt_pricing_parity_add_details_to_payment' );
+	add_filter( 'edd_payment_meta', 'gmt_pricing_parity_add_details_to_payment' );
