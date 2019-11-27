@@ -8,7 +8,7 @@
 	function gmt_pricing_parity_discount_details($payment_id) {
 		$payment = edd_get_payment($payment_id);
 		$payment_meta = $payment->get_meta();
-		$discount = $payment_meta['discount'];
+		$discount = $payment_meta['pricing_parity'];
 		?>
 			<div class="edd-order-pricing-parity edd-admin-box-inside">
 				<p>
