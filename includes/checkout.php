@@ -73,8 +73,8 @@
 		if (empty($discount)) return;
 
 		// Get the pre-adusted and discounted prices
-		$price = gmt_pricing_parity_get_item_preadjusted_price( $item['id'], $options );
-		$discounted_price = edd_cart_item_price( $item['id'], $options );
+		$price = gmt_pricing_parity_get_item_preadjusted_price( $item['id'], $item['options'] );
+		$discounted_price = edd_cart_item_price( $item['id'], $item['options'] );
 
 		// If they don't match, display a message
 		if ( $price !== $discounted_price ) {
