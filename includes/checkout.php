@@ -52,13 +52,15 @@
 	 * @param  Float   $price The price
 	 * @return Float          The location-adjusted price
 	 */
-	function gmt_pricing_parity_adjust_item_price($price) {
+	function gmt_pricing_parity_adjust_item_price($price, $download_id) {
 		$discount = EDD()->session->get( 'pricing_parity');
 		if (empty($discount)) return $price;
+		$no_discount = get_post_meta( $download_id, 'pricing_parity_no_discount', true );
+		if ($no_discount === 'on') return $price;
 		$price = floatval($price);
 		return $price - ($price * (intval($discount['amount']) / 100));
 	}
-	add_filter( 'edd_cart_item_price', 'gmt_pricing_parity_adjust_item_price' );
+	add_filter( 'edd_cart_item_price', 'gmt_pricing_parity_adjust_item_price', 10, 2 );
 
 
 	/**
@@ -77,8 +79,10 @@
 		$discounted_price = edd_cart_item_price( $item['id'], $item['options'] );
 
 		// If they don't match, display a message
-		if ( $price !== $discounted_price ) {
+		if ( edd_currency_filter( edd_format_amount( $price, true ) ) !== $discounted_price ) {
 			echo '<div><em class="text-small text-muted">(' . edd_currency_filter( edd_format_amount( $price, false ) ) . ' before discount)</em></div>';
+		} else {
+			echo '<div><em class="text-small text-muted">(This product is not eligible for location-based pricing)</span>';
 		}
 
 	}
