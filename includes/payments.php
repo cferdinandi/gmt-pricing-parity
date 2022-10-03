@@ -8,17 +8,17 @@
 	function gmt_pricing_parity_discount_details($payment_id) {
 		$payment = edd_get_payment($payment_id);
 		$payment_meta = $payment->get_meta();
-		$discount = $payment_meta['pricing_parity'];
+		$discount = in_array('pricing_parity', $payment_meta) ? $payment_meta['pricing_parity'] : null;
 		?>
-			<div class="edd-order-pricing-parity edd-admin-box-inside">
-				<p>
-					<span class="label"><?php _e( 'Pricing Parity:', 'pricing_parity' ); ?></span>&nbsp;
-					<?php if (empty($discount)) : ?>
-					<?php _e( 'none', 'pricing_parity' ); ?>
-					<?php else : ?>
-					<?php echo $discount['country']; ?> - <?php echo $discount['amount']; ?>%
-					<?php endif; ?>
-				</p>
+			<div class="edd-order-gateway edd-admin-box-inside edd-admin-box-inside--row">
+					<span class="label"><?php _e( 'Pricing Parity', 'pricing_parity' ); ?></span>
+					<span class="value">
+						<?php if (empty($discount)) : ?>
+						<?php _e( 'none', 'pricing_parity' ); ?>
+						<?php else : ?>
+						<?php echo $discount['country']; ?> - <?php echo $discount['amount']; ?>%
+						<?php endif; ?>
+					</span>
 			</div>
 		<?php
 	}
