@@ -30,7 +30,7 @@
 					<select id="pricing_parity_country" name="pricing_parity_country">
 						<option></option>
 						<?php foreach ($countries as $iso => $country_name) : ?>
-							<option value="<?php echo esc_attr($iso); ?>" <?php selected($country, $iso); ?>><?php echo esc_attr($country_name); ?></option>
+							<option value="<?php echo esc_attr($iso); ?>" <?php selected($country, $iso); ?>><?php echo esc_attr($country_name); ?> - <?php echo esc_attr($iso); ?></option>
 						<?php endforeach; ?>
 					</select>
 				</div>
