@@ -65,6 +65,7 @@
 	 */
 	function gmt_pricing_parity_add_columns ($columns) {
 		$columns['pricing_parity_amount'] = __('Amount', 'gmt-pricing-parity');
+		$columns['pricing_parity_country'] = __('ISO', 'gmt-pricing-parity');
 		return $columns;
 	}
 	add_filter('manage_gmt_pricing_parity_posts_columns' , 'gmt_pricing_parity_add_columns');
@@ -80,6 +81,9 @@
 	function gmt_pricing_parity_custom_column_value ($column, $post_id) {
 		if ($column === 'pricing_parity_amount') {
 			echo get_post_meta( $post_id, 'pricing_parity_amount', true ) . '%';
+		}
+		if ($column === 'pricing_parity_country') {
+			echo get_post_meta( $post_id, 'pricing_parity_country', true);
 		}
 	}
 	add_action( 'manage_gmt_pricing_parity_posts_custom_column', 'gmt_pricing_parity_custom_column_value', 10, 2 );
